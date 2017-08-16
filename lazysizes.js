@@ -280,7 +280,7 @@
 				visible = ((getCSS(parent, 'opacity') || 1) > 0);
 
 				if(visible && getCSS(parent, 'overflow') != 'visible'){
-					outerRect = parent.getBoundingClientRect();
+					outerRect = lazySizesConfig.adjustBoundingClientRect(parent.getBoundingClientRect());
 					visible = eLright > outerRect.left &&
 						eLleft < outerRect.right &&
 						eLbottom > outerRect.top - 1 &&
@@ -333,12 +333,12 @@
 
 					if(beforeExpandVal !== elemExpand){
 						eLvW = innerWidth + (elemExpand * hFac);
-						elvH = innerHeight + elemExpand;
+						elvH = lazySizesConfig.getViewportHeight() + elemExpand;
 						elemNegativeExpand = elemExpand * -1;
 						beforeExpandVal = elemExpand;
 					}
 
-					rect = lazyloadElems[i].getBoundingClientRect();
+					rect = lazySizesConfig.adjustBoundingClientRect(lazyloadElems[i].getBoundingClientRect());
 
 					if ((eLbottom = rect.bottom) >= elemNegativeExpand &&
 						(eLtop = rect.top) <= elvH &&
@@ -658,6 +658,8 @@
 			hFac: 0.8,
 			loadMode: 2,
 			loadHidden: true,
+			adjustBoundingClientRect: function(rect) { return rect; },
+			getViewportHeight: function() { return window.innerHeight; },
 		};
 
 		lazySizesConfig = window.lazySizesConfig || window.lazysizesConfig || {};
